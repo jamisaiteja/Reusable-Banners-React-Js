@@ -1,0 +1,181 @@
+//https://react1jst.ccbp.tech
+
+Lists & Keys | Cheat Sheet
+Concepts in Focus
+•	Keys
+o	Keys as Props
+•	Users List Application
+1. Keys
+Keys help React to identify which items have changed, added, or removed. They should be given to the elements inside the array for a stable identity. The best way to pick a key is to use a string that uniquely identifies a list item among its siblings. Most often, we would use IDs (uniqueNo) from our data as keys.
+Example:
+JS CODE:
+const userDetails = [
+  {
+    uniqueNo: 1,
+    imageUrl:
+      'https://assets.ccbp.in/frontend/react-js/esther-howard-img.png',
+    name: 'Esther Howard',
+    role: 'Software Developer'
+  }
+]
+File: src/App.js
+JSX CODE:
+import UserProfile from './components/UserProfile/index'
+const userDetailsList = [
+  {
+    uniqueNo: 1,
+    imageUrl:
+      'https://assets.ccbp.in/frontend/react-js/esther-howard-img.png',
+    name: 'Esther Howard',
+    role: 'Software Developer'
+  },
+  {
+    uniqueNo: 2,
+    imageUrl:
+      'https://assets.ccbp.in/frontend/react-js/floyd-miles-img.png',
+    name: 'Floyd Miles',
+    role: 'Software Developer'
+  },
+  {
+    uniqueNo: 3,
+    imageUrl:
+      'https://assets.ccbp.in/frontend/react-js/jacob-jones-img.png',
+    name: 'Jacob Jones',
+    role: 'Software Developer'
+  },
+  {
+    uniqueNo: 4,
+    imageUrl:
+      'https://assets.ccbp.in/frontend/react-js/esther-devon-lane.png',
+    name: 'Devon Lane',
+    role: 'Software Developer'
+  }
+]
+
+const App = () => (
+  <div className="list-container">
+    <h1 className="title">Users List</h1>
+    <ul>
+      {userDetailsList.map((eachItem) => (
+        <UserProfile userDetails={eachItem} />
+      ))}
+    </ul>
+  </div>
+)
+export default App
+
+The index.js file in the folder is considered to be the main file in it. So, a path like ./components/UserProfile can be used instead of  ./components/UserProfile/index.
+
+Note
+Keys used within arrays should be unique among their siblings. However, they don't need to be unique in the entire application.
+
+1.1 Keys as Props
+Keys don't get passed as a prop to the components.
+JSX CODE:
+
+const UserProfile = props => {
+  const {userDetails} = props
+  const {imageUrl, name, role, key} = userDetails
+  console.log(key)  // undefined
+
+  return (
+    <li className="user-card-container">
+      <img src={imageUrl} className="avatar" alt="avatar" />
+      <div className="user-details-container">
+        <h1 className="user-name"> {name} </h1>
+        <p className="user-designation"> {role} </p>
+      </div>
+    </li>
+  )
+}
+export default UserProfile
+
+
+If we need the same value in the component, pass it explicitly as a prop with a different name.
+Example:
+JSX CODE:
+
+const UsersList = userDetailsList.map((userDetails) =>
+  <UserProfile
+    key={userDetails.uniqueNo}
+    uniqueNo={userDetails.uniqueNo}
+    name={userDetails.name} />
+);
+
+
+2. Users List Application
+File: src/App.js
+JSX CODE:
+mport UserProfile from './components/UserProfile/index'
+const userDetailsList = [
+  {
+    uniqueNo: 1,
+    imageUrl:
+      'https://assets.ccbp.in/frontend/react-js/esther-howard-img.png',
+    name: 'Esther Howard',
+    role: 'Software Developer'
+  },
+  {
+    uniqueNo: 2,
+    imageUrl:
+      'https://assets.ccbp.in/frontend/react-js/floyd-miles-img.png',
+    name: 'Floyd Miles',
+    role: 'Software Developer'
+  },
+  {
+    uniqueNo: 3,
+    imageUrl:
+      'https://assets.ccbp.in/frontend/react-js/jacob-jones-img.png',
+    name: 'Jacob Jones',
+    role: 'Software Developer'
+  },
+  {
+    uniqueNo: 4,
+    imageUrl:
+      'https://assets.ccbp.in/frontend/react-js/esther-devon-lane.png',
+    name: 'Devon Lane',
+    role: 'Software Developer'
+  }
+]
+
+const App = () => (
+  <div className="list-container">
+    <h1 className="title">Users List</h1>
+    <ul>
+      {userDetailsList.map((eachItem) => (
+        <UserProfile userDetails={eachItem} />
+      ))}
+    </ul>
+  </div>
+)
+export default App
+
+File: src/components/UserProfile/index.js
+
+JSX CODE:
+
+import './index.css'
+
+const UserProfile = props => {
+  const {userDetails} = props
+  const {imageUrl, name, role} = userDetails
+
+  return (
+    <li className="user-card-container">
+      <img src={imageUrl} className="avatar" alt="avatar" />
+      <div className="user-details-container">
+        <h1 className="user-name"> {name} </h1>
+        <p className="user-designation"> {role} </p>
+      </div>
+    </li>
+  )
+}
+export default UserProfile
+
+Note
+React Error - ENOSPC: System limit for the number of file watchers reached
+Since create-react-app live-reloads and recompiles files on save, it needs to keep track of all project files.
+To fix the error, run the below commands in the terminal:
+1.	Insert the new value into the system config echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
+2.	Check that the new value was applied cat /proc/sys/fs/inotify/max_user_watches
+3.	Config variable name (not runnable) fs.inotify.max_user_watches=524288
